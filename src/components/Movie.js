@@ -37,7 +37,12 @@ const Movie = (props) => {
   };
 
   const capitalizerFirstLetter = (string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    if (!string) {
+      return "";
+    }
+    //replace _
+    let formattedString = string.replace("_", " ");
+    return formattedString.charAt(0).toUpperCase() + formattedString.slice(1);
   };
 
   const fetchMoreData = async () => {
@@ -67,15 +72,16 @@ const Movie = (props) => {
           style={{ overflow: "hidden" }}
         >
           <div className="container">
-            <div className="row">
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
               {results.map((element) => {
                 return (
-                  <div className="col-md-4" key={element.id}>
+                  <div className="col" key={element.id}>
                     <Movieitem
                       // key={element.id} for full info
                       title={element.title}
                       overview={element.overview.slice(0, 88)}
-                      backdrop_path={element.backdrop_path}
+                      // backdrop_path={element.backdrop_path} //for horizontal
+                      poster_path={element.poster_path} //for vertical
                       movieId={element.id}
                       date={element.release_date}
                     />
