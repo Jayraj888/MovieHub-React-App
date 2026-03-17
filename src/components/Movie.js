@@ -3,6 +3,7 @@ import Movieitem from "./Movieitem";
 import Loader from "./Loader";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
+import Sidebar from "./Sidebar";
 
 const Movie = (props) => {
   //Usestate hooks
@@ -59,40 +60,52 @@ const Movie = (props) => {
   };
 
   return (
-    <>
-      <h1 className="text-center" style={{ margin: "35px 0px" }}>
-        MovieHub - {capitalizerFirstLetter(props.category)}
-      </h1>
-      {
-        <InfiniteScroll
-          dataLength={results.length}
-          next={fetchMoreData}
-          hasMore={results.length !== totalResults}
-          loader={<Loader />}
-          style={{ overflow: "hidden" }}
-        >
-          <div className="container">
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
-              {results.map((element) => {
-                return (
-                  <div className="col" key={element.id}>
-                    <Movieitem
-                      // key={element.id} for full info
-                      title={element.title}
-                      overview={element.overview.slice(0, 88)}
-                      // backdrop_path={element.backdrop_path} //for horizontal
-                      poster_path={element.poster_path} //for vertical
-                      movieId={element.id}
-                      date={element.release_date}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </InfiniteScroll>
-      }
-    </>
+    <div
+      className="container-fluid"
+      style={{ marginTop: "3.5rem", padding: "0 5%" }}
+    >
+      {/* Adding Sidebar component */}
+      <div className="row">
+        <Sidebar mode={props.mode} />
+
+        {/*movies on rightside */}
+        <div className="col-lg-9">
+          <h2 className="text-center">
+            MovieHub - {capitalizerFirstLetter(props.category)}
+          </h2>
+
+          {
+            <InfiniteScroll
+              dataLength={results.length}
+              next={fetchMoreData}
+              hasMore={results.length !== totalResults}
+              loader={<Loader />}
+              style={{ overflow: "hidden" }}
+            >
+              <div className="container">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
+                  {results.map((element) => {
+                    return (
+                      <div className="col" key={element.id}>
+                        <Movieitem
+                          // key={element.id} for full info
+                          title={element.title}
+                          overview={element.overview.slice(0, 88)}
+                          // backdrop_path={element.backdrop_path} //for horizontal
+                          poster_path={element.poster_path} //for vertical
+                          movieId={element.id}
+                          date={element.release_date}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </InfiniteScroll>
+          }
+        </div>
+      </div>
+    </div>
   );
 };
 
